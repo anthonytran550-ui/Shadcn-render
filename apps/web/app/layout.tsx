@@ -1,0 +1,38 @@
+import type { Metadata } from "next";
+import localFont from "next/font/local";
+import "./globals.css";
+import { Header } from "@/components/header";
+import { Footer } from "@/components/footer";
+
+const geistSans = localFont({
+  src: "./fonts/GeistVF.woff",
+  variable: "--font-geist-sans",
+});
+const geistMono = localFont({
+  src: "./fonts/GeistMonoVF.woff",
+  variable: "--font-geist-mono",
+});
+
+export const metadata: Metadata = {
+  title: "json-render | AI-powered UI from JSON with guardrails",
+  description:
+    "Define a catalog. AI generates JSON. Your components render natively. Enterprise-grade guardrails for controlled AI UI generation.",
+};
+
+export default function RootLayout({
+  children,
+}: Readonly<{
+  children: React.ReactNode;
+}>) {
+  return (
+    <html lang="en">
+      <body className={`${geistSans.variable} ${geistMono.variable}`}>
+        <div className="min-h-screen flex flex-col">
+          <Header />
+          <main className="flex-1">{children}</main>
+          <Footer />
+        </div>
+      </body>
+    </html>
+  );
+}
