@@ -22,7 +22,7 @@ export function DatePicker({ element }: ComponentRenderProps) {
           border: '1px solid var(--border)',
           background: 'var(--card)',
           color: 'var(--foreground)',
-          fontSize: 14,
+          fontSize: 16,
           outline: 'none',
         }}
       />

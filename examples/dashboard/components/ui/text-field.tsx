@@ -42,7 +42,7 @@ export function TextField({ element }: ComponentRenderProps) {
           border: errors.length > 0 ? '1px solid #ef4444' : '1px solid var(--border)',
           background: 'var(--card)',
           color: 'var(--foreground)',
-          fontSize: 14,
+          fontSize: 16,
           outline: 'none',
         }}
       />

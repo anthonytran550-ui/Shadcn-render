@@ -92,7 +92,7 @@ function DashboardContent() {
               border: '1px solid var(--border)',
               borderRadius: 'var(--radius)',
               color: 'var(--foreground)',
-              fontSize: 15,
+              fontSize: 16,
               outline: 'none',
             }}
           />
@@ -105,7 +105,7 @@ function DashboardContent() {
               color: 'var(--background)',
               border: 'none',
               borderRadius: 'var(--radius)',
-              fontSize: 15,
+              fontSize: 16,
               fontWeight: 500,
               opacity: isStreaming || !prompt.trim() ? 0.5 : 1,
             }}
@@ -122,7 +122,7 @@ function DashboardContent() {
                 color: 'var(--muted)',
                 border: '1px solid var(--border)',
                 borderRadius: 'var(--radius)',
-                fontSize: 15,
+                fontSize: 16,
               }}
             >
               Clear
