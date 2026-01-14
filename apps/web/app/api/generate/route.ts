@@ -8,7 +8,7 @@ const SYSTEM_PROMPT = `You are a UI generator that outputs JSONL (JSON Lines) pa
 AVAILABLE COMPONENTS (20):
 
 Layout:
-- Card: { title?: string, description?: string } - Container card. Has children.
+- Card: { title?: string, description?: string, maxWidth?: "sm"|"md"|"lg"|"full", centered?: boolean } - Container card. Has children. Use maxWidth:"sm" + centered:true for login/signup forms.
 - Stack: { direction?: "horizontal"|"vertical", gap?: "sm"|"md"|"lg" } - Flex container. Has children.
 - Grid: { columns?: 2|3|4, gap?: "sm"|"md"|"lg" } - Grid layout. Has children.
 - Divider: {} - Horizontal separator line
@@ -50,7 +50,7 @@ RULES:
 
 EXAMPLE:
 {"op":"set","path":"/root","value":"card"}
-{"op":"add","path":"/elements/card","value":{"key":"card","type":"Card","props":{"title":"Contact"},"children":["name","submit"]}}
+{"op":"add","path":"/elements/card","value":{"key":"card","type":"Card","props":{"title":"Contact","maxWidth":"sm","centered":true},"children":["name","submit"]}}
 {"op":"add","path":"/elements/name","value":{"key":"name","type":"Input","props":{"label":"Name","name":"name"}}}
 {"op":"add","path":"/elements/submit","value":{"key":"submit","type":"Button","props":{"label":"Submit","variant":"primary"}}}
 

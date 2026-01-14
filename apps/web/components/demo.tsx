@@ -263,8 +263,10 @@ export function Demo() {
     switch (type) {
       // Layout
       case "Card":
+        const maxWidthClass = props.maxWidth === "sm" ? "max-w-xs min-w-[280px]" : props.maxWidth === "md" ? "max-w-sm min-w-[320px]" : props.maxWidth === "lg" ? "max-w-md min-w-[360px]" : "";
+        const centeredClass = props.centered ? "mx-auto" : "";
         return (
-          <div key={element.key} className={`border border-border rounded-lg p-3 bg-background ${baseClass}`}>
+          <div key={element.key} className={`border border-border rounded-lg p-3 bg-background ${maxWidthClass} ${centeredClass} ${baseClass}`}>
             {props.title && <div className="font-semibold text-sm mb-1 text-left">{props.title as string}</div>}
             {props.description && <div className="text-[10px] text-muted-foreground mb-2 text-left">{props.description as string}</div>}
             <div className="space-y-2">{renderChildren()}</div>
@@ -323,7 +325,7 @@ export function Demo() {
               <span className={selectedValue ? "text-foreground" : "text-muted-foreground/50"}>
                 {selectedValue || props.placeholder as string || "Select..."}
               </span>
-              <span className={`transition-transform ${isOpen ? "rotate-180" : ""}`}>v</span>
+              <svg className={`w-3 h-3 transition-transform ${isOpen ? "rotate-180" : ""}`} fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" /></svg>
             </div>
             {isOpen && selectOptions.length > 0 && (
               <div className="absolute z-10 top-full left-0 right-0 mt-1 bg-card border border-border rounded shadow-lg overflow-hidden">
@@ -334,7 +336,7 @@ export function Demo() {
                       setSelectValues((prev) => ({ ...prev, [element.key]: opt }));
                       setOpenSelect(null);
                     }}
-                    className={`px-2 py-1.5 text-xs cursor-pointer hover:bg-muted transition-colors ${selectedValue === opt ? "bg-muted" : ""}`}
+                    className={`px-2 py-1.5 text-xs text-left cursor-pointer hover:bg-muted transition-colors ${selectedValue === opt ? "bg-muted" : ""}`}
                   >
                     {opt}
                   </div>
@@ -478,10 +480,10 @@ export function Demo() {
     if (!root) return null;
 
     return (
-      <div className="animate-in fade-in duration-200 w-full">
+      <div className="animate-in fade-in duration-200 w-full min-h-full flex flex-col items-center">
         {renderElement(root, currentTree.elements)}
         {actionFired && (
-          <div className="mt-3 text-xs font-mono text-muted-foreground animate-in fade-in slide-in-from-bottom-2">
+          <div className="mt-3 text-xs font-mono text-muted-foreground text-center animate-in fade-in slide-in-from-bottom-2">
             onAction()
           </div>
         )}
@@ -623,7 +625,7 @@ export function Demo() {
         {/* Rendered output */}
         <div>
           <div className="text-xs text-muted-foreground mb-2 font-mono">render</div>
-          <div className="border border-border rounded p-3 bg-card h-96 overflow-auto">
+          <div className="border border-border rounded p-3 bg-card h-96 overflow-auto flex flex-col">
             {renderPreview()}
           </div>
         </div>
