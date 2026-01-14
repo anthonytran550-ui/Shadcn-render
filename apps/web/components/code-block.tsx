@@ -1,7 +1,7 @@
 "use client";
 
 import { useEffect, useState } from "react";
-import { codeToHtml } from "shiki";
+import { createHighlighter, type Highlighter } from "shiki";
 
 const vercelTheme = {
   name: "vercel",
@@ -62,6 +62,24 @@ const vercelTheme = {
   ],
 };
 
+// Preload highlighter on module load
+let highlighterPromise: Promise<Highlighter> | null = null;
+
+function getHighlighter() {
+  if (!highlighterPromise) {
+    highlighterPromise = createHighlighter({
+      themes: [vercelTheme],
+      langs: ["json", "tsx", "typescript"],
+    });
+  }
+  return highlighterPromise;
+}
+
+// Start loading immediately when module is imported
+if (typeof window !== "undefined") {
+  getHighlighter();
+}
+
 interface CodeBlockProps {
   code: string;
   lang: "json" | "tsx" | "typescript";
@@ -71,18 +89,13 @@ export function CodeBlock({ code, lang }: CodeBlockProps) {
   const [html, setHtml] = useState<string>("");
 
   useEffect(() => {
-    codeToHtml(code, {
-      lang,
-      theme: vercelTheme,
-    }).then(setHtml);
+    getHighlighter().then((highlighter) => {
+      setHtml(highlighter.codeToHtml(code, { lang, theme: "vercel" }));
+    });
   }, [code, lang]);
 
   if (!html) {
-    return (
-      <pre className="text-muted-foreground">
-        <code>{code}</code>
-      </pre>
-    );
+    return null;
   }
 
   return (

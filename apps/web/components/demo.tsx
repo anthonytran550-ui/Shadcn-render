@@ -65,7 +65,7 @@ export function Demo() {
   const [typedPrompt, setTypedPrompt] = useState("");
   const [stageIndex, setStageIndex] = useState(-1);
   const [streamLines, setStreamLines] = useState<string[]>([]);
-  const [activeTab, setActiveTab] = useState<Tab>("stream");
+  const [activeTab, setActiveTab] = useState<Tab>("json");
   const [actionFired, setActionFired] = useState(false);
 
   const currentStage = stageIndex >= 0 ? STAGES[stageIndex] : null;
@@ -75,7 +75,6 @@ export function Demo() {
     setTypedPrompt("");
     setStageIndex(-1);
     setStreamLines([]);
-    setActiveTab("stream");
     setActionFired(false);
   }, []);
 
@@ -115,7 +114,6 @@ export function Demo() {
         clearInterval(interval);
         setTimeout(() => {
           setPhase("complete");
-          setActiveTab("json");
         }, 500);
       }
     }, 600);
@@ -226,7 +224,7 @@ export function Demo() {
         {/* Tabbed code/stream/json panel */}
         <div>
           <div className="flex gap-4 mb-2">
-            {(["stream", "json", "code"] as const).map((tab) => (
+            {(["json", "stream", "code"] as const).map((tab) => (
               <button
                 key={tab}
                 onClick={() => setActiveTab(tab)}
