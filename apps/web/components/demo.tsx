@@ -120,6 +120,8 @@ export function Demo() {
   const [actionFired, setActionFired] = useState(false);
   const [tree, setTree] = useState<UITree | null>(null);
   const [isLoading, setIsLoading] = useState(false);
+  const [openSelect, setOpenSelect] = useState<string | null>(null);
+  const [selectValues, setSelectValues] = useState<Record<string, string>>({});
   const abortRef = useRef<AbortController | null>(null);
 
   const currentSimulationStage = stageIndex >= 0 ? SIMULATION_STAGES[stageIndex] : null;
@@ -263,8 +265,8 @@ export function Demo() {
       case "Card":
         return (
           <div key={element.key} className={`border border-border rounded-lg p-3 bg-background ${baseClass}`}>
-            {props.title && <div className="font-semibold text-sm mb-1">{props.title as string}</div>}
-            {props.description && <div className="text-[10px] text-muted-foreground mb-2">{props.description as string}</div>}
+            {props.title && <div className="font-semibold text-sm mb-1 text-left">{props.title as string}</div>}
+            {props.description && <div className="text-[10px] text-muted-foreground mb-2 text-left">{props.description as string}</div>}
             <div className="space-y-2">{renderChildren()}</div>
           </div>
         );
@@ -291,7 +293,7 @@ export function Demo() {
       case "Input":
         return (
           <div key={element.key} className={baseClass}>
-            {props.label && <label className="text-[10px] text-muted-foreground block mb-0.5">{props.label as string}</label>}
+            {props.label && <label className="text-[10px] text-muted-foreground block mb-0.5 text-left">{props.label as string}</label>}
             <div className="h-7 w-full bg-card border border-border rounded px-2 text-xs flex items-center text-muted-foreground/50">
               {props.placeholder as string || ""}
             </div>
@@ -301,20 +303,44 @@ export function Demo() {
         const rows = (props.rows as number) || 3;
         return (
           <div key={element.key} className={baseClass}>
-            {props.label && <label className="text-[10px] text-muted-foreground block mb-0.5">{props.label as string}</label>}
+            {props.label && <label className="text-[10px] text-muted-foreground block mb-0.5 text-left">{props.label as string}</label>}
             <div className={`w-full bg-card border border-border rounded px-2 py-1 text-xs text-muted-foreground/50`} style={{ minHeight: rows * 16 }}>
               {props.placeholder as string || ""}
             </div>
           </div>
         );
       case "Select":
+        const selectOptions = (props.options as string[]) || [];
+        const selectedValue = selectValues[element.key];
+        const isOpen = openSelect === element.key;
         return (
-          <div key={element.key} className={baseClass}>
-            {props.label && <label className="text-[10px] text-muted-foreground block mb-0.5">{props.label as string}</label>}
-            <div className="h-7 w-full bg-card border border-border rounded px-2 text-xs flex items-center justify-between text-muted-foreground/50">
-              <span>{props.placeholder as string || "Select..."}</span>
-              <span>v</span>
+          <div key={element.key} className={`relative ${baseClass}`}>
+            {props.label && <label className="text-[10px] text-muted-foreground block mb-0.5 text-left">{props.label as string}</label>}
+            <div
+              onClick={() => setOpenSelect(isOpen ? null : element.key)}
+              className="h-7 w-full bg-card border border-border rounded px-2 text-xs flex items-center justify-between cursor-pointer hover:border-foreground/30 transition-colors"
+            >
+              <span className={selectedValue ? "text-foreground" : "text-muted-foreground/50"}>
+                {selectedValue || props.placeholder as string || "Select..."}
+              </span>
+              <span className={`transition-transform ${isOpen ? "rotate-180" : ""}`}>v</span>
             </div>
+            {isOpen && selectOptions.length > 0 && (
+              <div className="absolute z-10 top-full left-0 right-0 mt-1 bg-card border border-border rounded shadow-lg overflow-hidden">
+                {selectOptions.map((opt, i) => (
+                  <div
+                    key={i}
+                    onClick={() => {
+                      setSelectValues((prev) => ({ ...prev, [element.key]: opt }));
+                      setOpenSelect(null);
+                    }}
+                    className={`px-2 py-1.5 text-xs cursor-pointer hover:bg-muted transition-colors ${selectedValue === opt ? "bg-muted" : ""}`}
+                  >
+                    {opt}
+                  </div>
+                ))}
+              </div>
+            )}
           </div>
         );
       case "Checkbox":
@@ -328,7 +354,7 @@ export function Demo() {
         const options = (props.options as string[]) || [];
         return (
           <div key={element.key} className={`space-y-1 ${baseClass}`}>
-            {props.label && <div className="text-[10px] text-muted-foreground mb-1">{props.label as string}</div>}
+            {props.label && <div className="text-[10px] text-muted-foreground mb-1 text-left">{props.label as string}</div>}
             {options.map((opt, i) => (
               <label key={i} className="flex items-center gap-2 text-xs">
                 <div className={`w-3.5 h-3.5 border border-border rounded-full ${i === 0 ? "bg-foreground" : "bg-card"}`} />
@@ -367,11 +393,11 @@ export function Demo() {
       case "Heading":
         const level = (props.level as number) || 2;
         const headingClass = level === 1 ? "text-lg font-bold" : level === 3 ? "text-xs font-semibold" : level === 4 ? "text-[10px] font-semibold" : "text-sm font-semibold";
-        return <div key={element.key} className={`${headingClass} ${baseClass}`}>{props.text as string}</div>;
+        return <div key={element.key} className={`${headingClass} text-left ${baseClass}`}>{props.text as string}</div>;
       case "Text":
         const textVariant = props.variant as string;
         const textClass = textVariant === "caption" ? "text-[10px]" : textVariant === "muted" ? "text-xs text-muted-foreground" : "text-xs";
-        return <p key={element.key} className={`${textClass} ${baseClass}`}>{props.content as string}</p>;
+        return <p key={element.key} className={`${textClass} text-left ${baseClass}`}>{props.content as string}</p>;
 
       // Data Display
       case "Image":
@@ -406,7 +432,7 @@ export function Demo() {
         const value = Math.min(100, Math.max(0, (props.value as number) || 0));
         return (
           <div key={element.key} className={baseClass}>
-            {props.label && <div className="text-[10px] text-muted-foreground mb-1">{props.label as string}</div>}
+            {props.label && <div className="text-[10px] text-muted-foreground mb-1 text-left">{props.label as string}</div>}
             <div className="h-2 bg-muted rounded-full overflow-hidden">
               <div className="h-full bg-foreground rounded-full transition-all" style={{ width: `${value}%` }} />
             </div>
@@ -417,7 +443,7 @@ export function Demo() {
         const maxRating = (props.max as number) || 5;
         return (
           <div key={element.key} className={baseClass}>
-            {props.label && <div className="text-[10px] text-muted-foreground mb-1">{props.label as string}</div>}
+            {props.label && <div className="text-[10px] text-muted-foreground mb-1 text-left">{props.label as string}</div>}
             <div className="flex gap-0.5">
               {Array.from({ length: maxRating }).map((_, i) => (
                 <span key={i} className={`text-sm ${i < ratingValue ? "text-yellow-400" : "text-muted"}`}>*</span>
@@ -430,7 +456,7 @@ export function Demo() {
       case "Form":
         return (
           <div key={element.key} className={`border border-border rounded-lg p-3 bg-background ${baseClass}`}>
-            {props.title && <div className="font-semibold text-sm mb-2">{props.title as string}</div>}
+            {props.title && <div className="font-semibold text-sm mb-2 text-left">{props.title as string}</div>}
             <div className="space-y-2">{renderChildren()}</div>
           </div>
         );
@@ -445,14 +471,14 @@ export function Demo() {
     const currentTree = mode === "simulation" ? currentSimulationStage?.tree : tree;
 
     if (!currentTree || !currentTree.root || !currentTree.elements[currentTree.root]) {
-      return <div className="text-muted-foreground/50 text-sm">{isLoading ? "generating..." : "waiting..."}</div>;
+      return <div className="h-full flex items-center justify-center text-muted-foreground/50 text-sm">{isLoading ? "generating..." : "waiting..."}</div>;
     }
 
     const root = currentTree.elements[currentTree.root];
     if (!root) return null;
 
     return (
-      <div className="text-center animate-in fade-in duration-200 w-full max-w-[240px]">
+      <div className="animate-in fade-in duration-200 w-full">
         {renderElement(root, currentTree.elements)}
         {actionFired && (
           <div className="mt-3 text-xs font-mono text-muted-foreground animate-in fade-in slide-in-from-bottom-2">
@@ -597,7 +623,7 @@ export function Demo() {
         {/* Rendered output */}
         <div>
           <div className="text-xs text-muted-foreground mb-2 font-mono">render</div>
-          <div className="border border-border rounded p-3 bg-card h-96 flex items-center justify-center">
+          <div className="border border-border rounded p-3 bg-card h-96 overflow-auto">
             {renderPreview()}
           </div>
         </div>
