@@ -224,7 +224,7 @@ export function Demo() {
                 value={userPrompt}
                 onChange={(e) => setUserPrompt(e.target.value)}
                 placeholder="Describe what you want to build..."
-                className="flex-1 bg-transparent outline-none placeholder:text-muted-foreground/50"
+                className="flex-1 bg-transparent outline-none placeholder:text-muted-foreground/50 text-base"
                 disabled={isStreaming}
                 maxLength={140}
                 autoFocus
