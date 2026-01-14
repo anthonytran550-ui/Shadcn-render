@@ -26,7 +26,7 @@ export function Select({ element }: ComponentRenderProps) {
       ) : null}
       <div
         onClick={() => setOpenSelectValue(isOpen ? null : key)}
-        className="h-7 w-full bg-card border border-border rounded px-2 text-xs flex items-center justify-between cursor-pointer hover:border-foreground/30 transition-colors"
+        className="h-7 w-full bg-background border border-border rounded px-2 text-xs flex items-center justify-between cursor-pointer hover:border-foreground/30 transition-colors"
       >
         <span
           className={
@@ -50,7 +50,7 @@ export function Select({ element }: ComponentRenderProps) {
         </svg>
       </div>
       {isOpen && options.length > 0 && (
-        <div className="absolute z-10 top-full left-0 right-0 mt-1 bg-card border border-border rounded shadow-lg overflow-hidden">
+        <div className="absolute z-10 top-full left-0 right-0 mt-1 bg-background border border-border rounded shadow-lg overflow-hidden">
           {options.map((opt, i) => (
             <div
               key={i}

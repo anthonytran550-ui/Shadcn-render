@@ -17,7 +17,7 @@ export function Input({ element }: ComponentRenderProps) {
       <input
         type={(props.type as string) || "text"}
         placeholder={(props.placeholder as string) || ""}
-        className="h-7 w-full bg-card border border-border rounded px-2 text-xs focus:outline-none focus:ring-1 focus:ring-foreground/20"
+        className="h-7 w-full bg-background border border-border rounded px-2 text-xs focus:outline-none focus:ring-1 focus:ring-foreground/20"
       />
     </div>
   );

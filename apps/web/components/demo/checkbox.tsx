@@ -15,7 +15,7 @@ export function Checkbox({ element }: ComponentRenderProps) {
       onClick={() => setChecked((prev) => !prev)}
     >
       <div
-        className={`w-3.5 h-3.5 border border-border rounded-sm flex items-center justify-center transition-colors ${checked ? "bg-foreground" : "bg-card"}`}
+        className={`w-3.5 h-3.5 border border-border rounded-sm flex items-center justify-center transition-colors ${checked ? "bg-foreground" : "bg-background"}`}
       >
         {checked && (
           <svg

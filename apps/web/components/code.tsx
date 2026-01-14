@@ -1,8 +1,8 @@
 import { codeToHtml } from "shiki";
 import { CopyButton } from "./copy-button";
 
-const vercelTheme = {
-  name: "vercel",
+const vercelDarkTheme = {
+  name: "vercel-dark",
   type: "dark" as const,
   colors: {
     "editor.background": "transparent",
@@ -60,6 +60,65 @@ const vercelTheme = {
   ],
 };
 
+const vercelLightTheme = {
+  name: "vercel-light",
+  type: "light" as const,
+  colors: {
+    "editor.background": "transparent",
+    "editor.foreground": "#171717",
+  },
+  settings: [
+    {
+      scope: ["comment", "punctuation.definition.comment"],
+      settings: { foreground: "#6b7280" },
+    },
+    {
+      scope: ["string", "string.quoted", "string.template"],
+      settings: { foreground: "#067a6e" },
+    },
+    {
+      scope: ["constant.numeric", "constant.language.boolean", "constant.language.null"],
+      settings: { foreground: "#067a6e" },
+    },
+    {
+      scope: ["keyword", "storage.type", "storage.modifier"],
+      settings: { foreground: "#d6409f" },
+    },
+    {
+      scope: ["keyword.operator", "keyword.control"],
+      settings: { foreground: "#d6409f" },
+    },
+    {
+      scope: ["entity.name.function", "support.function", "meta.function-call"],
+      settings: { foreground: "#6e56cf" },
+    },
+    {
+      scope: ["variable", "variable.other", "variable.parameter"],
+      settings: { foreground: "#171717" },
+    },
+    {
+      scope: ["entity.name.tag", "support.class.component", "entity.name.type"],
+      settings: { foreground: "#d6409f" },
+    },
+    {
+      scope: ["punctuation", "meta.brace", "meta.bracket"],
+      settings: { foreground: "#6b7280" },
+    },
+    {
+      scope: ["support.type.property-name", "entity.name.tag.json", "meta.object-literal.key"],
+      settings: { foreground: "#171717" },
+    },
+    {
+      scope: ["entity.other.attribute-name"],
+      settings: { foreground: "#067a6e" },
+    },
+    {
+      scope: ["support.type.primitive", "entity.name.type.primitive"],
+      settings: { foreground: "#067a6e" },
+    },
+  ],
+};
+
 interface CodeProps {
   children: string;
   lang?: "json" | "tsx" | "typescript" | "bash" | "javascript";
@@ -68,18 +127,22 @@ interface CodeProps {
 export async function Code({ children, lang = "typescript" }: CodeProps) {
   const html = await codeToHtml(children.trim(), {
     lang,
-    theme: vercelTheme,
+    themes: {
+      light: vercelLightTheme,
+      dark: vercelDarkTheme,
+    },
+    defaultColor: false,
   });
 
   return (
-    <div className="group relative my-6 rounded-lg border border-border bg-card p-4 overflow-x-auto text-sm [&_pre]:bg-transparent! [&_pre]:p-0! [&_pre]:m-0! [&_code]:bg-transparent! font-mono">
-      <div className="sticky top-0 float-right z-10 -mt-1 -mr-1">
+    <div className="group relative my-6 rounded-lg border border-border bg-neutral-100 dark:bg-[#0a0a0a] text-sm font-mono overflow-hidden">
+      <div className="absolute top-3 right-3 z-10">
         <CopyButton
           text={children.trim()}
-          className="opacity-0 group-hover:opacity-100 text-muted-foreground bg-card"
+          className="opacity-0 group-hover:opacity-100 text-neutral-500 dark:text-neutral-400 bg-neutral-100 dark:bg-[#0a0a0a]"
         />
       </div>
-      <div dangerouslySetInnerHTML={{ __html: html }} />
+      <div className="overflow-x-auto [&_pre]:bg-transparent! [&_pre]:m-0! [&_pre]:p-4! [&_code]:bg-transparent! [&_.shiki]:bg-transparent!" dangerouslySetInnerHTML={{ __html: html }} />
     </div>
   );
 }

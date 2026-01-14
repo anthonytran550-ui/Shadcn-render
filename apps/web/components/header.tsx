@@ -1,4 +1,5 @@
 import Link from "next/link";
+import { ThemeToggle } from "./theme-toggle";
 
 export function Header() {
   return (
@@ -7,7 +8,7 @@ export function Header() {
         <Link href="/" className="font-semibold hover:opacity-70 transition-opacity">
           json-render
         </Link>
-        <nav className="flex gap-6 items-center text-sm">
+        <nav className="flex gap-4 items-center text-sm">
           <Link
             href="/docs"
             className="text-muted-foreground hover:text-foreground transition-colors"
@@ -22,6 +23,7 @@ export function Header() {
           >
             GitHub
           </a>
+          <ThemeToggle />
         </nav>
       </div>
     </header>

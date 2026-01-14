@@ -185,10 +185,10 @@ export function Demo() {
   const showLoadingDots = isStreamingSimulation || isStreaming;
 
   return (
-    <div className="w-full max-w-4xl mx-auto">
+    <div className="w-full max-w-4xl mx-auto text-left">
       {/* Prompt input */}
       <div className="mb-6">
-        <div className="border border-border rounded p-3 bg-card font-mono text-sm min-h-[44px] flex items-center justify-between">
+        <div className="border border-border rounded p-3 bg-background font-mono text-sm min-h-[44px] flex items-center justify-between">
           {mode === "simulation" ? (
             <div className="flex items-center flex-1">
               <span className="inline-flex items-center h-5">{typedPrompt}</span>
@@ -219,29 +219,29 @@ export function Demo() {
           {(mode === "simulation" || isStreaming) ? (
             <button
               onClick={stopGeneration}
-              className="ml-2 p-1 text-muted-foreground hover:text-foreground transition-colors"
+              className="ml-2 w-7 h-7 rounded-full bg-primary text-primary-foreground flex items-center justify-center hover:bg-primary/90 transition-colors"
               aria-label="Stop"
             >
               <svg
-                width="14"
-                height="14"
+                width="16"
+                height="16"
                 viewBox="0 0 24 24"
                 fill="currentColor"
                 stroke="none"
               >
-                <rect x="6" y="6" width="12" height="12" rx="1" />
+                <rect x="6" y="6" width="12" height="12" />
               </svg>
             </button>
           ) : (
             <button
               onClick={handleSubmit}
               disabled={!userPrompt.trim()}
-              className="ml-2 p-1 text-muted-foreground hover:text-foreground transition-colors disabled:opacity-30"
+              className="ml-2 w-7 h-7 rounded-full bg-primary text-primary-foreground flex items-center justify-center hover:bg-primary/90 transition-colors disabled:opacity-30"
               aria-label="Submit"
             >
               <svg
-                width="14"
-                height="14"
+                width="16"
+                height="16"
                 viewBox="0 0 24 24"
                 fill="none"
                 stroke="currentColor"
@@ -255,7 +255,7 @@ export function Demo() {
             </button>
           )}
         </div>
-        <div className="mt-2 text-xs text-muted-foreground">
+        <div className="mt-2 text-xs text-muted-foreground text-center">
           Try: &quot;Create a login form&quot; or &quot;Build a feedback form with rating&quot;
         </div>
       </div>
@@ -276,7 +276,7 @@ export function Demo() {
               </button>
             ))}
           </div>
-          <div className="border border-border rounded p-3 bg-card font-mono text-xs h-96 overflow-auto text-left">
+          <div className="border border-border rounded p-3 bg-background font-mono text-xs h-96 overflow-auto text-left">
             <div className={activeTab === "stream" ? "" : "hidden"}>
               {streamLines.length > 0 ? (
                 <>
@@ -307,7 +307,7 @@ export function Demo() {
         {/* Rendered output using json-render */}
         <div>
           <div className="text-xs text-muted-foreground mb-2 font-mono">render</div>
-          <div className="border border-border rounded p-3 bg-card h-96 overflow-auto flex flex-col">
+          <div className="border border-border rounded p-3 bg-background h-96 overflow-auto flex flex-col">
             {currentTree && currentTree.root ? (
               <div className="animate-in fade-in duration-200 w-full flex flex-col items-center py-4">
                 <div className="my-auto">
