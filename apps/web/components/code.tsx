@@ -1,4 +1,5 @@
 import { codeToHtml } from "shiki";
+import { CopyButton } from "./copy-button";
 
 const vercelTheme = {
   name: "vercel",
@@ -71,9 +72,12 @@ export async function Code({ children, lang = "typescript" }: CodeProps) {
   });
 
   return (
-    <div
-      className="my-6 rounded-lg border border-border bg-card p-4 overflow-x-auto text-sm [&_pre]:!bg-transparent [&_pre]:!p-0 [&_pre]:!m-0 [&_code]:!bg-transparent font-mono"
-      dangerouslySetInnerHTML={{ __html: html }}
-    />
+    <div className="group relative my-6 rounded-lg border border-border bg-card p-4 overflow-x-auto text-sm [&_pre]:bg-transparent! [&_pre]:p-0! [&_pre]:m-0! [&_code]:bg-transparent! font-mono">
+      <CopyButton
+        text={children.trim()}
+        className="absolute top-2 right-2 opacity-0 group-hover:opacity-100 text-muted-foreground"
+      />
+      <div dangerouslySetInnerHTML={{ __html: html }} />
+    </div>
   );
 }

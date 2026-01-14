@@ -2,6 +2,7 @@
 
 import { useEffect, useState } from "react";
 import { createHighlighter, type Highlighter } from "shiki";
+import { CopyButton } from "./copy-button";
 
 const vercelTheme = {
   name: "vercel",
@@ -99,9 +100,15 @@ export function CodeBlock({ code, lang }: CodeBlockProps) {
   }
 
   return (
-    <div
-      className="text-[11px] leading-relaxed [&_pre]:bg-transparent! [&_pre]:p-0! [&_pre]:m-0! [&_pre]:border-none! [&_pre]:rounded-none! [&_pre]:text-[11px]! [&_code]:bg-transparent! [&_code]:p-0! [&_code]:rounded-none! [&_code]:text-[11px]!"
-      dangerouslySetInnerHTML={{ __html: html }}
-    />
+    <div className="relative group">
+      <CopyButton
+        text={code}
+        className="absolute top-0 right-0 opacity-0 group-hover:opacity-100 text-muted-foreground"
+      />
+      <div
+        className="text-[11px] leading-relaxed [&_pre]:bg-transparent! [&_pre]:p-0! [&_pre]:m-0! [&_pre]:border-none! [&_pre]:rounded-none! [&_pre]:text-[11px]! [&_code]:bg-transparent! [&_code]:p-0! [&_code]:rounded-none! [&_code]:text-[11px]!"
+        dangerouslySetInnerHTML={{ __html: html }}
+      />
+    </div>
   );
 }

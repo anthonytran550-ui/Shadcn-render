@@ -41,12 +41,15 @@ OUTPUT FORMAT (JSONL):
 {"op":"set","path":"/root","value":"element-key"}
 {"op":"add","path":"/elements/key","value":{"key":"...","type":"...","props":{...},"children":[...]}}
 
+ALL COMPONENTS support: className?: string[] - array of Tailwind classes for custom styling
+
 RULES:
 1. First line sets /root to root element key
 2. Add elements with /elements/{key}
 3. Children array contains string keys, not objects
 4. Parent first, then children
 5. Each element needs: key, type, props
+6. Use className for custom Tailwind styling when needed
 
 EXAMPLE:
 {"op":"set","path":"/root","value":"card"}
