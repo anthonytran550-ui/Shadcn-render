@@ -267,8 +267,8 @@ export function Demo() {
         const centeredClass = props.centered ? "mx-auto" : "";
         return (
           <div key={element.key} className={`border border-border rounded-lg p-3 bg-background ${maxWidthClass} ${centeredClass} ${baseClass}`}>
-            {props.title && <div className="font-semibold text-sm mb-1 text-left">{props.title as string}</div>}
-            {props.description && <div className="text-[10px] text-muted-foreground mb-2 text-left">{props.description as string}</div>}
+            {props.title ? <div className="font-semibold text-sm mb-1 text-left">{props.title as string}</div> : null}
+            {props.description ? <div className="text-[10px] text-muted-foreground mb-2 text-left">{props.description as string}</div> : null}
             <div className="space-y-2">{renderChildren()}</div>
           </div>
         );
@@ -295,7 +295,7 @@ export function Demo() {
       case "Input":
         return (
           <div key={element.key} className={baseClass}>
-            {props.label && <label className="text-[10px] text-muted-foreground block mb-0.5 text-left">{props.label as string}</label>}
+            {props.label ? <label className="text-[10px] text-muted-foreground block mb-0.5 text-left">{props.label as string}</label> : null}
             <div className="h-7 w-full bg-card border border-border rounded px-2 text-xs flex items-center text-muted-foreground/50">
               {props.placeholder as string || ""}
             </div>
@@ -305,7 +305,7 @@ export function Demo() {
         const rows = (props.rows as number) || 3;
         return (
           <div key={element.key} className={baseClass}>
-            {props.label && <label className="text-[10px] text-muted-foreground block mb-0.5 text-left">{props.label as string}</label>}
+            {props.label ? <label className="text-[10px] text-muted-foreground block mb-0.5 text-left">{props.label as string}</label> : null}
             <div className={`w-full bg-card border border-border rounded px-2 py-1 text-xs text-muted-foreground/50`} style={{ minHeight: rows * 16 }}>
               {props.placeholder as string || ""}
             </div>
@@ -317,7 +317,7 @@ export function Demo() {
         const isOpen = openSelect === element.key;
         return (
           <div key={element.key} className={`relative ${baseClass}`}>
-            {props.label && <label className="text-[10px] text-muted-foreground block mb-0.5 text-left">{props.label as string}</label>}
+            {props.label ? <label className="text-[10px] text-muted-foreground block mb-0.5 text-left">{props.label as string}</label> : null}
             <div
               onClick={() => setOpenSelect(isOpen ? null : element.key)}
               className="h-7 w-full bg-card border border-border rounded px-2 text-xs flex items-center justify-between cursor-pointer hover:border-foreground/30 transition-colors"
@@ -356,7 +356,7 @@ export function Demo() {
         const options = (props.options as string[]) || [];
         return (
           <div key={element.key} className={`space-y-1 ${baseClass}`}>
-            {props.label && <div className="text-[10px] text-muted-foreground mb-1 text-left">{props.label as string}</div>}
+            {props.label ? <div className="text-[10px] text-muted-foreground mb-1 text-left">{props.label as string}</div> : null}
             {options.map((opt, i) => (
               <label key={i} className="flex items-center gap-2 text-xs">
                 <div className={`w-3.5 h-3.5 border border-border rounded-full ${i === 0 ? "bg-foreground" : "bg-card"}`} />
@@ -427,14 +427,14 @@ export function Demo() {
         return (
           <div key={element.key} className={`p-2 rounded border ${alertClass} ${baseClass}`}>
             <div className="text-xs font-medium">{props.title as string}</div>
-            {props.message && <div className="text-[10px] mt-0.5">{props.message as string}</div>}
+            {props.message ? <div className="text-[10px] mt-0.5">{props.message as string}</div> : null}
           </div>
         );
       case "Progress":
         const value = Math.min(100, Math.max(0, (props.value as number) || 0));
         return (
           <div key={element.key} className={baseClass}>
-            {props.label && <div className="text-[10px] text-muted-foreground mb-1 text-left">{props.label as string}</div>}
+            {props.label ? <div className="text-[10px] text-muted-foreground mb-1 text-left">{props.label as string}</div> : null}
             <div className="h-2 bg-muted rounded-full overflow-hidden">
               <div className="h-full bg-foreground rounded-full transition-all" style={{ width: `${value}%` }} />
             </div>
@@ -445,7 +445,7 @@ export function Demo() {
         const maxRating = (props.max as number) || 5;
         return (
           <div key={element.key} className={baseClass}>
-            {props.label && <div className="text-[10px] text-muted-foreground mb-1 text-left">{props.label as string}</div>}
+            {props.label ? <div className="text-[10px] text-muted-foreground mb-1 text-left">{props.label as string}</div> : null}
             <div className="flex gap-0.5">
               {Array.from({ length: maxRating }).map((_, i) => (
                 <span key={i} className={`text-sm ${i < ratingValue ? "text-yellow-400" : "text-muted"}`}>*</span>
@@ -458,7 +458,7 @@ export function Demo() {
       case "Form":
         return (
           <div key={element.key} className={`border border-border rounded-lg p-3 bg-background ${baseClass}`}>
-            {props.title && <div className="font-semibold text-sm mb-2 text-left">{props.title as string}</div>}
+            {props.title ? <div className="font-semibold text-sm mb-2 text-left">{props.title as string}</div> : null}
             <div className="space-y-2">{renderChildren()}</div>
           </div>
         );
