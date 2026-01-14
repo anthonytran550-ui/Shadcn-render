@@ -82,7 +82,7 @@ export function Demo() {
         clearInterval(interval);
         setTimeout(() => setPhase("streaming"), 500);
       }
-    }, 40);
+    }, 20);
 
     return () => clearInterval(interval);
   }, [phase]);
@@ -170,11 +170,32 @@ export function Demo() {
     <div className="w-full max-w-4xl mx-auto">
       {/* Prompt input */}
       <div className="mb-6">
-        <div className="border border-border rounded p-3 bg-card font-mono text-sm min-h-[44px] flex items-center">
-          <span>{typedPrompt}</span>
-          {phase === "typing" && (
-            <span className="inline-block w-2 h-4 bg-foreground ml-0.5 animate-pulse" />
-          )}
+        <div className="border border-border rounded p-3 bg-card font-mono text-sm min-h-[44px] flex items-center justify-between">
+          <div className="flex items-center">
+            <span className="inline-flex items-center h-5">{typedPrompt}</span>
+            {phase === "typing" && (
+              <span className="inline-block w-2 h-4 bg-foreground ml-0.5 animate-pulse" />
+            )}
+          </div>
+          <button
+            onClick={reset}
+            className="ml-2 p-1 text-muted-foreground hover:text-foreground transition-colors"
+            aria-label="Replay demo"
+          >
+            <svg
+              width="14"
+              height="14"
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="currentColor"
+              strokeWidth="2"
+              strokeLinecap="round"
+              strokeLinejoin="round"
+            >
+              <path d="M21 12a9 9 0 1 1-9-9c2.52 0 4.93 1 6.74 2.74L21 8" />
+              <path d="M21 3v5h-5" />
+            </svg>
+          </button>
         </div>
       </div>
 
