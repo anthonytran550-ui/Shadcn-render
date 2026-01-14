@@ -277,28 +277,24 @@ export function Demo() {
             ))}
           </div>
           <div className="border border-border rounded p-3 bg-card font-mono text-xs h-96 overflow-auto text-left">
-            {activeTab === "stream" && (
-              <div className="space-y-1">
-                {streamLines.map((line, i) => (
-                  <div
-                    key={i}
-                    className="text-muted-foreground truncate animate-in fade-in slide-in-from-bottom-1 duration-200"
-                  >
-                    {line}
-                  </div>
-                ))}
-                {showLoadingDots && (
-                  <div className="flex gap-1 mt-2">
-                    <span className="w-1 h-1 bg-muted-foreground rounded-full animate-pulse" />
-                    <span className="w-1 h-1 bg-muted-foreground rounded-full animate-pulse [animation-delay:75ms]" />
-                    <span className="w-1 h-1 bg-muted-foreground rounded-full animate-pulse [animation-delay:150ms]" />
-                  </div>
-                )}
-                {streamLines.length === 0 && !showLoadingDots && (
-                  <div className="text-muted-foreground/50">waiting...</div>
-                )}
-              </div>
-            )}
+            <div className={activeTab === "stream" ? "" : "hidden"}>
+              {streamLines.length > 0 ? (
+                <>
+                  <CodeBlock code={streamLines.join("\n")} lang="json" />
+                  {showLoadingDots && (
+                    <div className="flex gap-1 mt-2">
+                      <span className="w-1 h-1 bg-muted-foreground rounded-full animate-pulse" />
+                      <span className="w-1 h-1 bg-muted-foreground rounded-full animate-pulse [animation-delay:75ms]" />
+                      <span className="w-1 h-1 bg-muted-foreground rounded-full animate-pulse [animation-delay:150ms]" />
+                    </div>
+                  )}
+                </>
+              ) : (
+                <div className="text-muted-foreground/50">
+                  {showLoadingDots ? "streaming..." : "waiting..."}
+                </div>
+              )}
+            </div>
             <div className={activeTab === "json" ? "" : "hidden"}>
               <CodeBlock code={jsonCode} lang="json" />
             </div>
