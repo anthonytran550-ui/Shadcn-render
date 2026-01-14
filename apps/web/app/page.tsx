@@ -18,7 +18,12 @@ export default function Home() {
 
         <Demo />
 
-        <div className="flex gap-3 justify-center mt-12">
+        <div className="flex items-center justify-center gap-2 border border-border rounded px-4 py-3 mt-12 mx-auto w-fit">
+          <code className="text-sm bg-transparent">npm install @json-render/core @json-render/react</code>
+          <CopyButton text="npm install @json-render/core @json-render/react" />
+        </div>
+
+        <div className="flex gap-3 justify-center mt-6">
           <Button size="lg" asChild>
             <Link href="/docs">Get Started</Link>
           </Button>

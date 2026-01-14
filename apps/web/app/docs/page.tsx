@@ -1,6 +1,3 @@
-import Link from "next/link";
-import { Button } from "@/components/ui/button";
-
 export const metadata = {
   title: "Introduction | json-render",
 };
@@ -44,21 +41,12 @@ export default function DocsPage() {
       </div>
 
       <h2 className="text-xl font-semibold mt-12 mb-4">How it works</h2>
-      <ol className="list-decimal list-inside space-y-2 text-sm text-muted-foreground mb-8">
+      <ol className="list-decimal list-inside space-y-2 text-sm text-muted-foreground">
         <li>You define the catalog — what components exist, what props they take</li>
         <li>AI generates JSON — constrained to your catalog</li>
         <li>You render it — with your own components</li>
         <li>Actions are safe — AI declares intent, you implement it</li>
       </ol>
-
-      <div className="flex gap-3 mt-12">
-        <Button size="sm" asChild>
-          <Link href="/docs/installation">Get Started</Link>
-        </Button>
-        <Button size="sm" variant="outline" asChild>
-          <Link href="/docs/quick-start">Quick Start</Link>
-        </Button>
-      </div>
     </article>
   );
 }
