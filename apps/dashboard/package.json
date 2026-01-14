@@ -11,8 +11,8 @@
   "dependencies": {
     "@ai-sdk/gateway": "^3.0.13",
     "ai": "^6.0.33",
-    "jsonui": "workspace:*",
-    "jsonui-react": "workspace:*",
+    "@json-render/core": "workspace:*",
+    "@json-render/react": "workspace:*",
     "next": "^15.3.0",
     "react": "^19.0.0",
     "react-dom": "^19.0.0",
