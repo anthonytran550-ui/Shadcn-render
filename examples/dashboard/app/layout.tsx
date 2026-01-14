@@ -1,8 +1,9 @@
 import type { Metadata } from 'next';
+import './globals.css';
 
 export const metadata: Metadata = {
-  title: 'json-render Dashboard Demo',
-  description: 'AI-powered dashboard widget generator with guardrails',
+  title: 'Dashboard | json-render',
+  description: 'AI-generated dashboard widgets with guardrails',
 };
 
 export default function RootLayout({
@@ -12,17 +13,7 @@ export default function RootLayout({
 }) {
   return (
     <html lang="en">
-      <body
-        style={{
-          margin: 0,
-          fontFamily:
-            '-apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif',
-          backgroundColor: '#f9fafb',
-          minHeight: '100vh',
-        }}
-      >
-        {children}
-      </body>
+      <body>{children}</body>
     </html>
   );
 }

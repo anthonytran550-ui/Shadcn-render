@@ -8,9 +8,8 @@ import {
   useUIStream,
   Renderer,
 } from '@json-render/react';
-import { componentRegistry } from '@/components/ui-components';
+import { componentRegistry } from '@/components/ui';
 
-// Sample data for the dashboard
 const INITIAL_DATA = {
   analytics: {
     revenue: 125000,
@@ -36,32 +35,16 @@ const INITIAL_DATA = {
   },
 };
 
-// Action handlers
 const ACTION_HANDLERS = {
-  export_report: () => {
-    alert('Exporting report... (demo)');
-  },
-  refresh_data: () => {
-    alert('Refreshing data... (demo)');
-  },
-  view_details: (params: Record<string, unknown>) => {
-    alert(`Viewing details for: ${JSON.stringify(params)}`);
-  },
-  apply_filter: () => {
-    alert('Applying filters... (demo)');
-  },
+  export_report: () => alert('Exporting report...'),
+  refresh_data: () => alert('Refreshing data...'),
+  view_details: (params: Record<string, unknown>) => alert(`Details: ${JSON.stringify(params)}`),
+  apply_filter: () => alert('Applying filters...'),
 };
 
 function DashboardContent() {
   const [prompt, setPrompt] = useState('');
-
-  const {
-    tree,
-    isStreaming,
-    error,
-    send,
-    clear,
-  } = useUIStream({
+  const { tree, isStreaming, error, send, clear } = useUIStream({
     api: '/api/generate',
     onError: (err) => console.error('Generation error:', err),
   });
@@ -75,231 +58,154 @@ function DashboardContent() {
     [prompt, send]
   );
 
-  const examplePrompts = [
-    'Show me a revenue dashboard with key metrics and a chart of sales by region',
-    'Create a transactions table with recent orders',
-    'Build a widget showing customer count with a trend indicator',
-    'Make a simple card with total revenue and an export button',
+  const examples = [
+    'Revenue dashboard with metrics and chart',
+    'Recent transactions table',
+    'Customer count with trend',
   ];
 
   const hasElements = tree && Object.keys(tree.elements).length > 0;
 
   return (
-    <div style={{ maxWidth: '1200px', margin: '0 auto', padding: '24px' }}>
-      {/* Header */}
-      <div style={{ marginBottom: '32px' }}>
-        <h1
-          style={{
-            margin: '0 0 8px 0',
-            fontSize: '28px',
-            fontWeight: 700,
-            color: '#111827',
-          }}
-        >
-          json-render Dashboard Demo
+    <div style={{ maxWidth: 960, margin: '0 auto', padding: '48px 24px' }}>
+      <header style={{ marginBottom: 48 }}>
+        <h1 style={{ margin: 0, fontSize: 32, fontWeight: 600, letterSpacing: '-0.02em' }}>
+          Dashboard
         </h1>
-        <p style={{ margin: 0, color: '#6b7280', fontSize: '16px' }}>
-          AI-powered widget generation with guardrails. Only catalog components can be generated.
+        <p style={{ margin: '8px 0 0', color: 'var(--muted)', fontSize: 16 }}>
+          Generate widgets from prompts. Constrained to your catalog.
         </p>
-      </div>
+      </header>
 
-      {/* Input Form */}
-      <div
-        style={{
-          backgroundColor: '#fff',
-          borderRadius: '12px',
-          border: '1px solid #e5e7eb',
-          padding: '20px',
-          marginBottom: '24px',
-        }}
-      >
-        <form onSubmit={handleSubmit}>
-          <div style={{ display: 'flex', gap: '12px', marginBottom: '16px' }}>
-            <input
-              type="text"
-              value={prompt}
-              onChange={(e) => setPrompt(e.target.value)}
-              placeholder="Describe the widget you want to create..."
-              style={{
-                flex: 1,
-                padding: '12px 16px',
-                borderRadius: '8px',
-                border: '1px solid #d1d5db',
-                fontSize: '15px',
-                outline: 'none',
-              }}
-              disabled={isStreaming}
-            />
-            <button
-              type="submit"
-              disabled={isStreaming || !prompt.trim()}
-              style={{
-                padding: '12px 24px',
-                backgroundColor: isStreaming ? '#9ca3af' : '#6366f1',
-                color: '#fff',
-                border: 'none',
-                borderRadius: '8px',
-                fontSize: '15px',
-                fontWeight: 500,
-                cursor: isStreaming ? 'not-allowed' : 'pointer',
-              }}
-            >
-              {isStreaming ? 'Generating...' : 'Generate'}
-            </button>
+      <form onSubmit={handleSubmit} style={{ marginBottom: 32 }}>
+        <div style={{ display: 'flex', gap: 8, marginBottom: 16 }}>
+          <input
+            type="text"
+            value={prompt}
+            onChange={(e) => setPrompt(e.target.value)}
+            placeholder="Describe what you want..."
+            disabled={isStreaming}
+            style={{
+              flex: 1,
+              padding: '12px 16px',
+              background: 'var(--card)',
+              border: '1px solid var(--border)',
+              borderRadius: 'var(--radius)',
+              color: 'var(--foreground)',
+              fontSize: 15,
+              outline: 'none',
+            }}
+          />
+          <button
+            type="submit"
+            disabled={isStreaming || !prompt.trim()}
+            style={{
+              padding: '12px 24px',
+              background: isStreaming ? 'var(--border)' : 'var(--foreground)',
+              color: 'var(--background)',
+              border: 'none',
+              borderRadius: 'var(--radius)',
+              fontSize: 15,
+              fontWeight: 500,
+              opacity: isStreaming || !prompt.trim() ? 0.5 : 1,
+            }}
+          >
+            {isStreaming ? 'Generating...' : 'Generate'}
+          </button>
+          {hasElements && (
             <button
               type="button"
               onClick={clear}
               style={{
-                padding: '12px 20px',
-                backgroundColor: '#fff',
-                color: '#374151',
-                border: '1px solid #d1d5db',
-                borderRadius: '8px',
-                fontSize: '15px',
-                fontWeight: 500,
-                cursor: 'pointer',
+                padding: '12px 16px',
+                background: 'transparent',
+                color: 'var(--muted)',
+                border: '1px solid var(--border)',
+                borderRadius: 'var(--radius)',
+                fontSize: 15,
               }}
             >
               Clear
             </button>
-          </div>
+          )}
+        </div>
 
-          {/* Example Prompts */}
-          <div style={{ display: 'flex', flexWrap: 'wrap', gap: '8px' }}>
-            <span style={{ fontSize: '13px', color: '#6b7280', marginRight: '4px' }}>
-              Try:
-            </span>
-            {examplePrompts.map((example, i) => (
-              <button
-                key={i}
-                type="button"
-                onClick={() => setPrompt(example)}
-                style={{
-                  padding: '4px 10px',
-                  backgroundColor: '#f3f4f6',
-                  border: 'none',
-                  borderRadius: '4px',
-                  fontSize: '12px',
-                  color: '#4b5563',
-                  cursor: 'pointer',
-                }}
-              >
-                {example.slice(0, 40)}...
-              </button>
-            ))}
-          </div>
-        </form>
-      </div>
+        <div style={{ display: 'flex', gap: 8, flexWrap: 'wrap' }}>
+          {examples.map((ex) => (
+            <button
+              key={ex}
+              type="button"
+              onClick={() => setPrompt(ex)}
+              style={{
+                padding: '6px 12px',
+                background: 'var(--card)',
+                color: 'var(--muted)',
+                border: '1px solid var(--border)',
+                borderRadius: 'var(--radius)',
+                fontSize: 13,
+              }}
+            >
+              {ex}
+            </button>
+          ))}
+        </div>
+      </form>
 
-      {/* Error Display */}
       {error && (
         <div
           style={{
-            padding: '16px',
-            backgroundColor: '#fef2f2',
-            border: '1px solid #fca5a5',
-            borderRadius: '8px',
-            marginBottom: '24px',
-            color: '#991b1b',
+            padding: 16,
+            marginBottom: 24,
+            background: 'var(--card)',
+            border: '1px solid var(--border)',
+            borderRadius: 'var(--radius)',
+            color: '#ef4444',
+            fontSize: 14,
           }}
         >
-          <strong>Error:</strong> {error.message}
+          {error.message}
         </div>
       )}
 
-      {/* Generated UI */}
       <div
         style={{
-          backgroundColor: '#fff',
-          borderRadius: '12px',
-          border: '1px solid #e5e7eb',
-          padding: '24px',
-          minHeight: '300px',
+          minHeight: 300,
+          padding: 24,
+          background: 'var(--card)',
+          border: '1px solid var(--border)',
+          borderRadius: 'var(--radius)',
         }}
       >
         {!hasElements && !isStreaming ? (
-          <div style={{ textAlign: 'center', padding: '60px 20px', color: '#9ca3af' }}>
-            <div style={{ fontSize: '48px', marginBottom: '16px' }}>🎨</div>
-            <p style={{ fontSize: '16px', margin: 0 }}>
-              Enter a prompt above to generate a dashboard widget
-            </p>
+          <div style={{ textAlign: 'center', padding: '60px 20px', color: 'var(--muted)' }}>
+            <p style={{ margin: 0 }}>Enter a prompt to generate a widget</p>
           </div>
         ) : tree ? (
-          <Renderer
-            tree={tree}
-            registry={componentRegistry}
-            loading={isStreaming}
-          />
+          <Renderer tree={tree} registry={componentRegistry} loading={isStreaming} />
         ) : null}
       </div>
 
-      {/* Debug: Show generated JSON */}
       {hasElements && (
-        <details style={{ marginTop: '24px' }}>
-          <summary
-            style={{
-              cursor: 'pointer',
-              fontSize: '14px',
-              color: '#6b7280',
-              marginBottom: '8px',
-            }}
-          >
-            View Generated JSON
+        <details style={{ marginTop: 24 }}>
+          <summary style={{ cursor: 'pointer', fontSize: 14, color: 'var(--muted)' }}>
+            View JSON
           </summary>
           <pre
             style={{
-              backgroundColor: '#1f2937',
-              color: '#e5e7eb',
-              padding: '16px',
-              borderRadius: '8px',
+              marginTop: 8,
+              padding: 16,
+              background: 'var(--card)',
+              border: '1px solid var(--border)',
+              borderRadius: 'var(--radius)',
               overflow: 'auto',
-              fontSize: '12px',
+              fontSize: 12,
+              color: 'var(--muted)',
             }}
           >
             {JSON.stringify(tree, null, 2)}
           </pre>
         </details>
       )}
-
-      {/* Info Box */}
-      <div
-        style={{
-          marginTop: '32px',
-          padding: '20px',
-          backgroundColor: '#eff6ff',
-          borderRadius: '8px',
-          border: '1px solid #bfdbfe',
-        }}
-      >
-        <h3 style={{ margin: '0 0 12px 0', fontSize: '16px', color: '#1e40af' }}>
-          How json-render Works
-        </h3>
-        <ul
-          style={{
-            margin: 0,
-            paddingLeft: '20px',
-            color: '#1e40af',
-            fontSize: '14px',
-            lineHeight: 1.6,
-          }}
-        >
-          <li>
-            <strong>Guardrails:</strong> AI can only generate components from the catalog (Card,
-            Metric, Chart, etc.)
-          </li>
-          <li>
-            <strong>Data Binding:</strong> Components reference data paths like{' '}
-            <code>/analytics/revenue</code>
-          </li>
-          <li>
-            <strong>Named Actions:</strong> Buttons declare actions like{' '}
-            <code>export_report</code> - you control what they do
-          </li>
-          <li>
-            <strong>Your Design System:</strong> The catalog maps to your actual React components
-          </li>
-        </ul>
-      </div>
     </div>
   );
 }

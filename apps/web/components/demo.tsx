@@ -227,7 +227,6 @@ export function Demo() {
                 className="flex-1 bg-transparent outline-none placeholder:text-muted-foreground/50 text-base"
                 disabled={isStreaming}
                 maxLength={140}
-                autoFocus
               />
             </form>
           )}
