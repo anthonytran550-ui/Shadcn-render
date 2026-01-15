@@ -38,7 +38,7 @@ bun add @json-render/core @json-render/react`}</Code>
           <code className="text-foreground">react</code> ^19.0.0
         </li>
         <li>
-          <code className="text-foreground">zod</code> ^3.0.0
+          <code className="text-foreground">zod</code> ^4.0.0
         </li>
       </ul>
       <Code lang="bash">npm install react zod</Code>

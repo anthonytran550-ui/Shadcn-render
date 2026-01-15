@@ -159,7 +159,7 @@ export function createCatalog<
     elementSchema = z.object({
       key: z.string(),
       type: z.string(),
-      props: z.record(z.unknown()),
+      props: z.record(z.string(), z.unknown()),
       children: z.array(z.string()).optional(),
       parentKey: z.string().nullable().optional(),
       visible: VisibilityConditionSchema.optional(),
@@ -177,7 +177,7 @@ export function createCatalog<
   // Create tree schema
   const treeSchema = z.object({
     root: z.string(),
-    elements: z.record(elementSchema),
+    elements: z.record(z.string(), elementSchema),
   }) as unknown as z.ZodType<UITree>;
 
   return {

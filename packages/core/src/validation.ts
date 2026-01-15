@@ -32,7 +32,7 @@ export interface ValidationConfig {
  */
 export const ValidationCheckSchema = z.object({
   fn: z.string(),
-  args: z.record(DynamicValueSchema).optional(),
+  args: z.record(z.string(), DynamicValueSchema).optional(),
   message: z.string(),
 });
 

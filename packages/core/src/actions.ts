@@ -60,7 +60,7 @@ export const ActionConfirmSchema = z.object({
  */
 export const ActionOnSuccessSchema = z.union([
   z.object({ navigate: z.string() }),
-  z.object({ set: z.record(z.unknown()) }),
+  z.object({ set: z.record(z.string(), z.unknown()) }),
   z.object({ action: z.string() }),
 ]);
 
@@ -68,7 +68,7 @@ export const ActionOnSuccessSchema = z.union([
  * Schema for error handlers
  */
 export const ActionOnErrorSchema = z.union([
-  z.object({ set: z.record(z.unknown()) }),
+  z.object({ set: z.record(z.string(), z.unknown()) }),
   z.object({ action: z.string() }),
 ]);
 
@@ -77,7 +77,7 @@ export const ActionOnErrorSchema = z.union([
  */
 export const ActionSchema = z.object({
   name: z.string(),
-  params: z.record(DynamicValueSchema).optional(),
+  params: z.record(z.string(), DynamicValueSchema).optional(),
   confirm: ActionConfirmSchema.optional(),
   onSuccess: ActionOnSuccessSchema.optional(),
   onError: ActionOnErrorSchema.optional(),
