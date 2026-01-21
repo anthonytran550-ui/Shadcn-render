@@ -5,6 +5,7 @@
 
 :root {
   --radius: 0.5rem;
+  --ds-gray-500: oklch(0.836 0 0);
   /* Monochrome light theme */
   --background: oklch(1.0 0 0);
   --foreground: oklch(0.1 0 0);
@@ -28,6 +29,7 @@
 }
 
 .dark {
+  --ds-gray-500: oklch(0.39 0 0);
   /* Monochrome dark theme */
   --background: oklch(0.0 0 0);
   --foreground: oklch(0.98 0 0);

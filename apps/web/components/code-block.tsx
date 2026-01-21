@@ -201,7 +201,7 @@ export function CodeBlock({
         </div>
       )}
       <div
-        className="text-[11px] leading-relaxed [&_pre]:bg-transparent! [&_pre]:p-0! [&_pre]:m-0! [&_pre]:border-none! [&_pre]:rounded-none! [&_pre]:text-[11px]! [&_pre]:overflow-visible! [&_code]:bg-transparent! [&_code]:p-0! [&_code]:rounded-none! [&_code]:text-[11px]!"
+        className="text-[13px] leading-relaxed [&_pre]:bg-transparent! [&_pre]:p-0! [&_pre]:m-0! [&_pre]:border-none! [&_pre]:rounded-none! [&_pre]:text-[13px]! [&_pre]:overflow-visible! [&_code]:bg-transparent! [&_code]:p-0! [&_code]:rounded-none! [&_code]:text-[13px]!"
         dangerouslySetInnerHTML={{ __html: html }}
       />
     </div>
