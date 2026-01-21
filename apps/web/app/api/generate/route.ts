@@ -77,18 +77,40 @@ EXAMPLE (Blog with responsive grid):
 
 Generate JSONL:`;
 
-const MAX_PROMPT_LENGTH = 140;
+const MAX_PROMPT_LENGTH = 500;
 const DEFAULT_MODEL = "anthropic/claude-haiku-4.5";
 
 export async function POST(req: Request) {
-  const { prompt } = await req.json();
+  const { prompt, context } = await req.json();
+  const previousTree = context?.previousTree;
 
   const sanitizedPrompt = String(prompt || "").slice(0, MAX_PROMPT_LENGTH);
+
+  // Build the user prompt, including previous tree for iteration
+  let userPrompt = sanitizedPrompt;
+  if (
+    previousTree &&
+    previousTree.root &&
+    Object.keys(previousTree.elements || {}).length > 0
+  ) {
+    userPrompt = `CURRENT UI STATE (already loaded, DO NOT recreate existing elements):
+${JSON.stringify(previousTree, null, 2)}
+
+USER REQUEST: ${sanitizedPrompt}
+
+IMPORTANT: The current UI is already loaded. Output ONLY the patches needed to make the requested change:
+- To add a new element: {"op":"add","path":"/elements/new-key","value":{...}}
+- To modify an existing element: {"op":"set","path":"/elements/existing-key","value":{...}}
+- To update the root: {"op":"set","path":"/root","value":"new-root-key"}
+- To add children: update the parent element with new children array
+
+DO NOT output patches for elements that don't need to change. Only output what's necessary for the requested modification.`;
+  }
 
   const result = streamText({
     model: process.env.AI_GATEWAY_MODEL || DEFAULT_MODEL,
     system: SYSTEM_PROMPT,
-    prompt: sanitizedPrompt,
+    prompt: userPrompt,
     temperature: 0.7,
   });
 

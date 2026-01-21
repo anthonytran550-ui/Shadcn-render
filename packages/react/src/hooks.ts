@@ -132,8 +132,12 @@ export function useUIStream({
       setIsStreaming(true);
       setError(null);
 
-      // Start with an empty tree
-      let currentTree: UITree = { root: "", elements: {} };
+      // Start with previous tree if provided, otherwise empty tree
+      const previousTree = context?.previousTree as UITree | undefined;
+      let currentTree: UITree =
+        previousTree && previousTree.root
+          ? { ...previousTree, elements: { ...previousTree.elements } }
+          : { root: "", elements: {} };
       setTree(currentTree);
 
       try {

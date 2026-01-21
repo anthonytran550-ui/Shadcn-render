@@ -159,9 +159,28 @@ type Phase = "typing" | "streaming" | "complete";
 type Tab = "stream" | "json";
 type RenderView = "dynamic" | "static";
 
-export function Demo() {
-  const [mode, setMode] = useState<Mode>("simulation");
-  const [phase, setPhase] = useState<Phase>("typing");
+interface DemoProps {
+  fullscreen?: boolean;
+  skipSimulation?: boolean;
+}
+
+const EXAMPLE_PROMPTS = [
+  "Create a login form with email and password",
+  "Build a feedback form with rating stars",
+  "Design a contact card with avatar",
+  "Make a settings panel with toggles",
+];
+
+export function Demo({
+  fullscreen = false,
+  skipSimulation = false,
+}: DemoProps) {
+  const [mode, setMode] = useState<Mode>(
+    skipSimulation ? "interactive" : "simulation",
+  );
+  const [phase, setPhase] = useState<Phase>(
+    skipSimulation ? "complete" : "typing",
+  );
   const [typedPrompt, setTypedPrompt] = useState("");
   const [userPrompt, setUserPrompt] = useState("");
   const [stageIndex, setStageIndex] = useState(-1);
@@ -909,10 +928,19 @@ Open [http://localhost:3000](http://localhost:3000) to view.
   const isStreamingSimulation = mode === "simulation" && phase === "streaming";
   const showLoadingDots = isStreamingSimulation || isStreaming;
 
+  const handleExampleClick = useCallback((prompt: string) => {
+    setMode("interactive");
+    setPhase("complete");
+    setUserPrompt(prompt);
+    setTimeout(() => inputRef.current?.focus(), 0);
+  }, []);
+
   return (
-    <div className="w-full max-w-4xl mx-auto text-left">
+    <div
+      className={`w-full text-left ${fullscreen ? "h-full flex flex-col" : "max-w-5xl mx-auto"}`}
+    >
       {/* Prompt input */}
-      <div className="mb-6">
+      <div className={fullscreen ? "mb-4" : "mb-6"}>
         <div
           className="border border-border rounded p-3 bg-background font-mono text-sm min-h-[44px] flex items-center justify-between cursor-text"
           onClick={() => {
@@ -1000,16 +1028,32 @@ Open [http://localhost:3000](http://localhost:3000) to view.
             </button>
           )}
         </div>
-        <div className="mt-2 text-xs text-muted-foreground text-center">
-          Try: &quot;Create a login form&quot; or &quot;Build a feedback form
-          with rating&quot;
-        </div>
+        {fullscreen ? (
+          <div className="mt-3 flex flex-wrap gap-2 justify-center">
+            {EXAMPLE_PROMPTS.map((prompt) => (
+              <button
+                key={prompt}
+                onClick={() => handleExampleClick(prompt)}
+                className="text-xs px-3 py-1.5 rounded-full border border-border text-muted-foreground hover:text-foreground hover:border-foreground/50 transition-colors"
+              >
+                {prompt}
+              </button>
+            ))}
+          </div>
+        ) : (
+          <div className="mt-2 text-xs text-muted-foreground text-center">
+            Try: &quot;Create a login form&quot; or &quot;Build a feedback form
+            with rating&quot;
+          </div>
+        )}
       </div>
 
-      <div className="grid lg:grid-cols-2 gap-4">
+      <div
+        className={`grid lg:grid-cols-2 gap-4 ${fullscreen ? "flex-1 min-h-0" : ""}`}
+      >
         {/* Tabbed code/stream/json panel */}
-        <div className="min-w-0">
-          <div className="flex items-center gap-4 mb-2 h-6">
+        <div className={`min-w-0 ${fullscreen ? "flex flex-col" : ""}`}>
+          <div className="flex items-center gap-4 mb-2 h-6 shrink-0">
             {(["json", "stream"] as const).map((tab) => (
               <button
                 key={tab}
@@ -1024,7 +1068,9 @@ Open [http://localhost:3000](http://localhost:3000) to view.
               </button>
             ))}
           </div>
-          <div className="border border-border rounded bg-background font-mono text-xs h-96 text-left grid relative group">
+          <div
+            className={`border border-border rounded bg-background font-mono text-xs text-left grid relative group ${fullscreen ? "flex-1 min-h-0" : "h-[28rem]"}`}
+          >
             <div className="absolute top-2 right-2 z-10">
               <CopyButton
                 text={
@@ -1034,7 +1080,7 @@ Open [http://localhost:3000](http://localhost:3000) to view.
               />
             </div>
             <div
-              className={`overflow-auto h-full ${activeTab === "stream" ? "" : "hidden"}`}
+              className={`overflow-auto ${activeTab === "stream" ? "" : "hidden"}`}
             >
               {streamLines.length > 0 ? (
                 <>
@@ -1059,7 +1105,7 @@ Open [http://localhost:3000](http://localhost:3000) to view.
               )}
             </div>
             <div
-              className={`overflow-auto h-full ${activeTab === "json" ? "" : "hidden"}`}
+              className={`overflow-auto ${activeTab === "json" ? "" : "hidden"}`}
             >
               <CodeBlock
                 code={jsonCode}
@@ -1072,8 +1118,8 @@ Open [http://localhost:3000](http://localhost:3000) to view.
         </div>
 
         {/* Rendered output using json-render */}
-        <div className="min-w-0">
-          <div className="flex items-center justify-between mb-2 h-6">
+        <div className={`min-w-0 ${fullscreen ? "flex flex-col" : ""}`}>
+          <div className="flex items-center justify-between mb-2 h-6 shrink-0">
             <div className="flex items-center gap-4">
               {(
                 [
@@ -1126,7 +1172,9 @@ Open [http://localhost:3000](http://localhost:3000) to view.
               </button>
             </div>
           </div>
-          <div className="border border-border rounded bg-background h-96 grid relative group">
+          <div
+            className={`border border-border rounded bg-background grid relative group ${fullscreen ? "flex-1 min-h-0" : "h-[28rem]"}`}
+          >
             {renderView === "static" && (
               <div className="absolute top-2 right-2 z-10">
                 <CopyButton

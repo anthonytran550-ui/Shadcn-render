@@ -48,6 +48,12 @@ export function Header() {
         </div>
         <nav className="flex items-center gap-4">
           <Link
+            href="/playground"
+            className="text-sm text-muted-foreground hover:text-foreground transition-colors"
+          >
+            Playground
+          </Link>
+          <Link
             href="/docs"
             className="text-sm text-muted-foreground hover:text-foreground transition-colors"
           >
