@@ -12,7 +12,7 @@ export default function ChangelogPage() {
         Notable changes and updates to json-render.
       </p>
 
-      <h2 className="text-xl font-semibold mt-12 mb-4">v0.3.0</h2>
+      <h2 className="text-xl font-semibold mt-12 mb-4">v0.4.0</h2>
       <p className="text-sm text-muted-foreground mb-6">February 2026</p>
 
       <h3 className="text-lg font-semibold mt-8 mb-4">
@@ -37,6 +37,28 @@ const mySchema = defineSchema((s) => ({
   }),
 }), {
   promptTemplate: myPromptTemplate,
+});`}</Code>
+
+      <h3 className="text-lg font-semibold mt-8 mb-4">New: Component Slots</h3>
+      <p className="text-sm text-muted-foreground mb-4">
+        Components can now define which slots they accept. Use{" "}
+        <code>[&quot;default&quot;]</code> for regular children, or named slots
+        like <code>[&quot;header&quot;, &quot;footer&quot;]</code> for more
+        complex layouts.
+      </p>
+      <Code lang="typescript">{`const catalog = defineCatalog(schema, {
+  components: {
+    Card: {
+      props: z.object({ title: z.string() }),
+      slots: ["default"],  // accepts children
+      description: "A card container",
+    },
+    Layout: {
+      props: z.object({}),
+      slots: ["header", "content", "footer"],  // named slots
+      description: "Page layout with header, content, footer",
+    },
+  },
 });`}</Code>
 
       <h3 className="text-lg font-semibold mt-8 mb-4">
@@ -66,32 +88,6 @@ const result = await streamText({
   prompt: userMessage,
 });`}</Code>
 
-      <h3 className="text-lg font-semibold mt-8 mb-4">New: SpecStream</h3>
-      <p className="text-sm text-muted-foreground mb-4">
-        SpecStream is json-render&apos;s streaming format for progressively
-        building specs from JSONL patches. The new compiler API makes it easy to
-        process streaming AI responses.
-      </p>
-      <Code lang="typescript">{`import { createSpecStreamCompiler } from "@json-render/core";
-
-const compiler = createSpecStreamCompiler<MySpec>();
-
-// Process streaming chunks
-const { result, newPatches } = compiler.push(chunk);
-setSpec(result); // Update UI with partial result`}</Code>
-
-      <h3 className="text-lg font-semibold mt-8 mb-4">
-        New: @json-render/codegen
-      </h3>
-      <p className="text-sm text-muted-foreground mb-4">
-        Export specs as React code. Traverse specs and serialize them to JSX for
-        code export features.
-      </p>
-      <Code lang="typescript">{`import { traverseSpec, serializeToJSX } from "@json-render/codegen";
-
-const jsx = serializeToJSX(spec, catalog);
-// Returns: <Card title="Hello"><Button label="Click" /></Card>`}</Code>
-
       <h3 className="text-lg font-semibold mt-8 mb-4">
         New: @json-render/remotion
       </h3>
@@ -120,6 +116,20 @@ const catalog = defineCatalog(schema, {
         SplitScreen, etc.), 7 transition types, and the ClipWrapper utility for
         custom components.
       </p>
+
+      <h3 className="text-lg font-semibold mt-8 mb-4">New: SpecStream</h3>
+      <p className="text-sm text-muted-foreground mb-4">
+        SpecStream is json-render&apos;s streaming format for progressively
+        building specs from JSONL patches. The new compiler API makes it easy to
+        process streaming AI responses.
+      </p>
+      <Code lang="typescript">{`import { createSpecStreamCompiler } from "@json-render/core";
+
+const compiler = createSpecStreamCompiler<MySpec>();
+
+// Process streaming chunks
+const { result, newPatches } = compiler.push(chunk);
+setSpec(result); // Update UI with partial result`}</Code>
 
       <h3 className="text-lg font-semibold mt-8 mb-4">
         Improved: Dashboard Example
@@ -158,6 +168,25 @@ const catalog = defineCatalog(schema, {
           <code>defineCatalog</code> now requires a schema as first argument
         </li>
       </ul>
+
+      <hr className="my-12 border-border" />
+
+      <h2 className="text-xl font-semibold mt-12 mb-4">v0.3.0</h2>
+      <p className="text-sm text-muted-foreground mb-6">January 2026</p>
+      <p className="text-sm text-muted-foreground mb-4">
+        Internal release with codegen foundations.
+      </p>
+      <ul className="list-disc list-inside text-sm text-muted-foreground space-y-1 mb-4">
+        <li>
+          Added <code>@json-render/codegen</code> package (spec traversal and
+          JSX serialization)
+        </li>
+        <li>Configurable AI model via environment variables</li>
+        <li>Documentation improvements and bug fixes</li>
+      </ul>
+      <p className="text-sm text-muted-foreground italic">
+        Note: Only @json-render/core was published to npm for this release.
+      </p>
 
       <hr className="my-12 border-border" />
 
