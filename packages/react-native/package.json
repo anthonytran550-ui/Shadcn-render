@@ -56,10 +56,11 @@
     "typecheck": "tsc --noEmit"
   },
   "dependencies": {
-    "@json-render/core": "workspace:*"
+    "@json-render/core": "workspace:*",
+    "@internal/react-state": "workspace:*"
   },
   "devDependencies": {
-    "@repo/typescript-config": "workspace:*",
+    "@internal/typescript-config": "workspace:*",
     "@types/react": "19.2.3",
     "react-native": "0.83.1",
     "tsup": "^8.0.2",
@@ -67,7 +68,7 @@
     "zod": "^4.0.0"
   },
   "peerDependencies": {
-    "react": "^19.0.0",
+    "react": "^18.0.0 || ^19.0.0",
     "react-native": ">=0.71.0",
     "zod": "^4.0.0"
   }
