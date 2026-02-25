@@ -69,6 +69,16 @@ export const docsNavigation: NavSection[] = [
         href: "https://github.com/vercel-labs/json-render/tree/main/examples/remotion",
         external: true,
       },
+      {
+        title: "Vue",
+        href: "https://github.com/vercel-labs/json-render/tree/main/examples/vue",
+        external: true,
+      },
+      {
+        title: "Renders with Vite (Vue / React)",
+        href: "https://github.com/vercel-labs/json-render/tree/main/examples/vite-renderers",
+        external: true,
+      },
     ],
   },
   {
@@ -97,6 +107,7 @@ export const docsNavigation: NavSection[] = [
       { title: "@json-render/shadcn", href: "/docs/api/shadcn" },
       { title: "@json-render/react-native", href: "/docs/api/react-native" },
       { title: "@json-render/remotion", href: "/docs/api/remotion" },
+      { title: "@json-render/vue", href: "/docs/api/vue" },
       { title: "@json-render/codegen", href: "/docs/api/codegen" },
     ],
   },
